@@ -23,19 +23,14 @@
 /* OF WHETHER IN AN ACTION IN CONTRACT, TORT OR NEGLIGENCE, ARISING OUT	*/
 /* OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.	*/
 /************************************************************************/
+/* $XFree86: xc/programs/rstart/server.c,v 1.5 2001/07/25 15:05:15 dawes Exp $ */
 
 /* Extended rsh "helper" program */
 #include <stdio.h>
 #include <ctype.h>
 #include <X11/Xos.h>
 #include <errno.h>
-#ifndef X_NOT_STDC_ENV
 #include <stdlib.h>
-#else
-extern int errno;
-extern void *malloc();
-extern char *getenv();
-#endif
 #include <sys/stat.h>
 
 #ifdef	ODT1_DISPLAY_HACK
@@ -45,54 +40,68 @@ extern char *getenv();
 #define	TRUE	1
 #define	FALSE	0
 
+extern void squish_out_escapes ( char *s );
+extern char * Strdup ( char *s );
+extern int get_a_line ( FILE *f, int *pargc, char ***pargv );
+extern void nomem ( void );
+static char *Strlwr ( char *s0 );
+extern void do_it ( void );
+extern void process ( FILE *f, int is_the_real_thing );
+extern void detach ( void );
+extern void putenv_with_prefix ( char *prefix, char *name, char *value );
+
+/* auth.c */
+extern void do_auth ( void );
+
 struct key {
 	char *name;
-	void (*func)();
+	void (*func)(int ac, char **av);
 };
 
-extern void key_cmd();
-extern void key_exec();
-extern void key_context();
-extern void key_misc();
-extern void key_generic_cmd();
-extern void key_dir();
-extern void key_detach();
-extern void key_nodetach();
-extern void key_posix_umask();
-extern void key_auth();
-extern void key_internal_registries();
-extern void key_internal_local_default();
-extern void key_internal_global_contexts();
-extern void key_internal_local_contexts();
-extern void key_internal_global_commands();
-extern void key_internal_local_commands();
-extern void key_internal_variable_prefix();
-extern void key_internal_print();
-extern void key_internal_auth_program();
-extern void key_internal_auth_input();
+extern void key_cmd(int ac, char **av);
+extern void key_exec(int ac, char **av);
+extern void key_context(int ac, char **av);
+extern void key_misc(int ac, char **av);
+extern void key_generic_cmd(int ac, char **av);
+extern void key_dir(int ac, char **av);
+extern void key_detach(int ac, char **av);
+extern void key_nodetach(int ac, char **av);
+extern void key_posix_umask(int ac, char **av);
+extern void key_auth(int ac, char **av);
+extern void key_internal_registries(int ac, char **av);
+extern void key_internal_local_default(int ac, char **av);
+extern void key_internal_global_contexts(int ac, char **av);
+extern void key_internal_local_contexts(int ac, char **av);
+extern void key_internal_global_commands(int ac, char **av);
+extern void key_internal_local_commands(int ac, char **av);
+extern void key_internal_variable_prefix(int ac, char **av);
+extern void key_internal_print(int ac, char **av);
+extern void key_internal_auth_program(int ac, char **av);
+extern void key_internal_auth_input(int ac, char **av);
+
 
 struct key keys[] = {
-	"cmd",				key_cmd,
-	"exec",				key_exec,
-	"context",			key_context,
-	"misc",				key_misc,
-	"generic-cmd",			key_generic_cmd,
-	"dir",				key_dir,
-	"detach",			key_detach,
-	"nodetach",			key_nodetach,
-	"posix-umask",			key_posix_umask,
-	"auth",				key_auth,
-	"internal-registries",		key_internal_registries,
-	"internal-local-default",	key_internal_local_default,
-	"internal-global-contexts",	key_internal_global_contexts,
-	"internal-local-contexts",	key_internal_local_contexts,
-	"internal-global-commands",	key_internal_global_commands,
-	"internal-local-commands",	key_internal_local_commands,
-	"internal-variable-prefix",	key_internal_variable_prefix,
-	"internal-print",		key_internal_print,
-	"internal-auth-program",		key_internal_auth_program,
-	"internal-auth-input",		key_internal_auth_input,
-	NULL,
+	{ "cmd",			key_cmd },
+	{ "exec",			key_exec },
+	{ "context",			key_context },
+	{ "misc",			key_misc },
+	{ "generic-cmd",		key_generic_cmd },
+	{ "dir",			key_dir },
+	{ "detach",			key_detach },
+	{ "nodetach",			key_nodetach },
+	{ "posix-umask",		key_posix_umask },
+	{ "auth",			key_auth },
+	{ "internal-registries",	key_internal_registries },
+	{ "internal-local-default",	key_internal_local_default },
+	{ "internal-global-contexts",	key_internal_global_contexts },
+	{ "internal-local-contexts",	key_internal_local_contexts },
+	{ "internal-global-commands",	key_internal_global_commands },
+	{ "internal-local-commands",	key_internal_local_commands },
+	{ "internal-variable-prefix",	key_internal_variable_prefix },
+	{ "internal-print",		key_internal_print },
+	{ "internal-auth-program",	key_internal_auth_program },
+	{ "internal-auth-input",	key_internal_auth_input },
+	{ NULL,				NULL }
 };
 
 
@@ -113,9 +122,8 @@ int parm_detach = FALSE;
 char *parm_global_default = DEFAULT_CONFIG;
 char	myname[]=SERVERNAME;
 
-main(argc, argv)
-int argc;
-char **argv;
+int
+main(int argc, char *argv[])
 {
 	FILE *f;
 
@@ -140,8 +148,10 @@ char **argv;
 	process(stdin, TRUE);
 
 	do_it();
+	exit(0);
 }
 
+void
 squish_out_escapes(s)
 char *s;
 {
@@ -250,6 +260,7 @@ char ***pargv;
 	return TRUE;
 }
 
+void
 nomem()
 {
 	printf("%s: Failure: Out of memory\n",myname);
@@ -515,7 +526,8 @@ char **av;
 	parm_generic_cmd = av;
 }
 
-do_it()
+void
+do_it(void)
 {
 	if(parm_dir) {
 		if(chdir(parm_dir)) {
@@ -647,6 +659,7 @@ do_it()
 	exit(255);
 }
 
+void
 process(f, is_the_real_thing)
 FILE *f;
 int is_the_real_thing;
@@ -710,7 +723,8 @@ char **av;
 	parm_detach = FALSE;
 }
 
-detach()
+void
+detach(void)
 {
 	/* I'm not exactly sure how you're supposed to handle stdio here */
 	switch(fork()) {
@@ -730,6 +744,7 @@ detach()
 	}
 }
 
+void
 putenv_with_prefix(prefix, name, value)
 char *prefix;
 char *name;
