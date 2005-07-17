@@ -40,7 +40,7 @@ configdir = $(libdir)/X11/rstart
 config_DATA = config
 
 config: config.cpp
-	$(CPP) -DPACKAGEname=rstart -DLIBDIR=$(configdir) -DENVPREFIX=RSTART $< |	\
+	$(CPP) -DPACKAGEname=rstart -DLIBDIR=$(configdir) -DENVPREFIX=RSTART ${srcdir}/config.cpp |	\
 		$(SED) -e /^\#.*$$/d  -e s/XCOMM/\#/g   > $@
 
 # wrapper scripts
@@ -48,11 +48,12 @@ config: config.cpp
 bin_SCRIPTS = rstart rstartd
 
 rstart: client.cpp
-	$(CPP) -DRSHCMD=$(RSH) -DSERVERNAME=rstartd $< |	\
+	$(CPP) -DRSHCMD=$(RSH) -DSERVERNAME=rstartd ${srcdir}/client.cpp |	\
 		$(SED) -e /^\#.*$$/d  -e s/XCOMM/\#/g   > $@
 
 rstartd: server.cpp
-	$(CPP) -DBINDIR=$(rstart_serverdir) -DLIBDIR=$(configdir) $< |	\
+	$(CPP) -DBINDIR=$(rstart_serverdir) -DLIBDIR=$(configdir) \
+		${srcdir}/server.cpp |	\
 		$(SED) -e /^\#.*$$/d  -e s/XCOMM/\#/g   > $@
 
 # man pages
