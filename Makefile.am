@@ -24,11 +24,11 @@
 rstart_serverdir = $(libdir)/X11/rstart
 rstart_server_PROGRAMS = rstartd.real
 
-rstartd_real_CFLAGS = $(DEP_CFLAGS)			\
+rstartd_real_CFLAGS = $(RSTART_CFLAGS)			\
 		-DSERVERNAME=\"rstart\"			\
 		-DDEFAULT_CONFIG=\"$(libdir)/X11/rstart/config\"
 
-rstartd_real_LDADD = $(DEP_LIBS)
+rstartd_real_LDADD = $(RSTART_LIBS)
 
 rstartd_real_SOURCES =	\
         auth.c \

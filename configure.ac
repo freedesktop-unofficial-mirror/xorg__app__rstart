@@ -36,9 +36,9 @@ if [[ -z $SED ]] ; then
 fi
 
 # Checks for pkg-config packages
-PKG_CHECK_MODULES(DEP, x11)
-AC_SUBST(DEP_CFLAGS)
-AC_SUBST(DEP_LIBS)
+PKG_CHECK_MODULES(RSTART, x11)
+AC_SUBST(RSTART_CFLAGS)
+AC_SUBST(RSTART_LIBS)
 
 AC_OUTPUT([
 	Makefile 
