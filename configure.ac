@@ -28,6 +28,12 @@ AM_MAINTAINER_MODE
 
 AM_CONFIG_HEADER(config.h)
 
+AC_ARG_VAR([RM],[Name of the rm command])
+AC_ARG_VAR([LN],[Name of the ln command])
+
+AC_CHECK_PROG([RM],[rm],[rm -f])
+AC_CHECK_PROG([LN],[ln],[ln -s])
+
 AC_PROG_CC
 AC_PROG_INSTALL
 AC_PATH_PROG(SED, sed)
