@@ -76,7 +76,7 @@ CLEANFILES = rstart rstartd config
 DATA_DIR = $(libdir)/X11/rstart
 
 install-data-hook:
-	for name in `find commands -print | grep -v CVS` ; do		\
+	for name in `find ${srcdir}/commands -print | grep -v CVS` ; do	\
 	    if test -f $$name; then					\
 	        sed							\
 		    -e 's,ENVPREFIX,RSTART,g'				\
@@ -94,7 +94,7 @@ install-data-hook:
 	    fi;								\
 	done;								\
 									\
-	for name in `find contexts -print | grep -v CVS` ; do		\
+	for name in `find ${srcdir}/contexts -print | grep -v CVS` ; do	\
 	    if test -f $$name; then					\
 	        sed							\
 	            -e 's,_PATH,$(DEFAULT_USER_PATH),g'			\
@@ -108,13 +108,13 @@ install-data-hook:
 	done;								\
 									\
 	cd $(DATA_DIR)/contexts;					\
-	sed -e '/^$$/d' -e '/^#/d' @Aliases |				\
+	sed -e '/^$$/d' -e '/^#/d' ${srcdir}/contexts/@Aliases |	\
 	    while read real aliases; do					\
 	        for i in $$aliases; do					\
 	            $(RM) $$i;						\
 	            $(LN) $$real $$i;					\
-	            $(RM) $(DESTDIR)$(MYLIBDIR)/commands/$$i;		\
-	            $(LN) $$real $(DESTDIR)$(MYLIBDIR)/commands/$$i;	\
+	            $(RM) $(DESTDIR)$(rstart_serverdir)/commands/$$i;	\
+	            $(LN) $$real $(DESTDIR)$(rstart_serverdir)/commands/$$i; \
 	        done;							\
 	    done;							\
 	$(RM) @Aliases
