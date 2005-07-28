@@ -119,6 +119,9 @@ install-data-hook:
 	    done;							\
 	$(RM) @Aliases
 
+distuninstallcheck:
+	@:
+
 EXTRA_DIST +=								\
 	commands/ListContexts						\
 	commands/x11r6/Terminal						\
