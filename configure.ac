@@ -22,7 +22,7 @@ dnl
 dnl Process this file with autoconf to create configure.
 
 AC_PREREQ([2.57])
-AC_INIT(rstart,[7.0], [xorg@freedesktop.org],rstart)
+AC_INIT(rstart,[0.99.0], [https://bugs.freedesktop.org/enter_bug.cgi?product=xorg],rstart)
 AM_INIT_AUTOMAKE([dist-bzip2])
 AM_MAINTAINER_MODE
 
@@ -45,6 +45,8 @@ fi
 PKG_CHECK_MODULES(RSTART, x11)
 AC_SUBST(RSTART_CFLAGS)
 AC_SUBST(RSTART_LIBS)
+
+XORG_RELEASE_VERSION
 
 AC_OUTPUT([
 	Makefile 
