@@ -58,7 +58,7 @@ rstartd: server.cpp
 
 # man pages
 
-dist_man_MANS = \
+dist_man1_MANS = \
         rstartd.man \
         rstart.man
 
