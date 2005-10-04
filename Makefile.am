@@ -123,6 +123,8 @@ distuninstallcheck:
 	@:
 
 EXTRA_DIST +=								\
+	server.os2							\
+									\
 	commands/ListContexts						\
 	commands/x11r6/Terminal						\
 	commands/x11r6/LoadMonitor					\
