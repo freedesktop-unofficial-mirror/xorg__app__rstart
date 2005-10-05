@@ -80,16 +80,16 @@ install-data-hook:
 	    if test -f $$name; then					\
 	        sed							\
 		    -e 's,ENVPREFIX,RSTART,g'				\
-		        < $$name > $(DATA_DIR)/$$name;			\
-		case `basename $(DATA_DIR)/$$name` in			\
+		        < $$name > $(DESTDIR)$(DATA_DIR)/$$name;	\
+		case `basename $(DESTDIR)$(DATA_DIR)/$$name` in		\
 		@*)							\
 		    ;;							\
 		*)							\
-		    chmod a+x $(DATA_DIR)/$$name ;;			\
+		    chmod a+x $(DESTDIR)$(DATA_DIR)/$$name ;;		\
 		esac;							\
 	    else							\
 	        if [ -d $$name ] ; then					\
-	            mkdir -p $(DATA_DIR)/$$name ;			\
+	            mkdir -p $(DESTDIR)$(DATA_DIR)/$$name ;		\
 	        fi;							\
 	    fi;								\
 	done;								\
@@ -99,15 +99,15 @@ install-data-hook:
 	        sed							\
 	            -e 's,_PATH,$(DEFAULT_USER_PATH),g'			\
 	            -e 's,_MANPATH,$(DEFAULT_X_MANPATH),g'		\
-				< $$name > $(DATA_DIR)/$$name ;		\
+			< $$name > $(DESTDIR)$(DATA_DIR)/$$name ;	\
 	    else							\
 	        if [ -d $$name ] ; then					\
-	            mkdir -p $(DATA_DIR)/$$name	;			\
+	            mkdir -p $(DESTDIR)$(DATA_DIR)/$$name	;	\
 	        fi ;							\
 	    fi ;							\
 	done;								\
 									\
-	cd $(DATA_DIR)/contexts;					\
+	cd $(DESTDIR)$(DATA_DIR)/contexts;				\
 	sed -e '/^$$/d' -e '/^#/d' ${srcdir}/contexts/@Aliases |	\
 	    while read real aliases; do					\
 	        for i in $$aliases; do					\
