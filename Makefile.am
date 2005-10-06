@@ -34,27 +34,41 @@ rstartd_real_SOURCES =	\
         auth.c \
         server.c
 
+# Translate XCOMM into pound sign with sed, rather than passing -DXCOMM=XCOMM
+# to cpp, because that trick does not work on all ANSI C preprocessors.
+# Delete line numbers from the cpp output (-P is not portable, I guess).
+# Allow XCOMM to be preceded by whitespace and provide a means of generating
+# output lines with trailing backslashes.
+# Allow XHASH to always be substituted, even in cases where XCOMM isn't.
+
+CPP_SED_MAGIC = $(SED) -e '/^\#  *[0-9][0-9]*  *.*$$/d' \
+                       -e '/^\#line  *[0-9][0-9]*  *.*$$/d' \
+                       -e '/^[         ]*XCOMM$$/s/XCOMM/\#/' \
+                       -e '/^[         ]*XCOMM[^a-zA-Z0-9_]/s/XCOMM/\#/' \
+                       -e '/^[         ]*XHASH/s/XHASH/\#/' \
+                       -e '/\@\@$$/s/\@\@$$/\\/'
+
 # config data
 
 configdir = $(libdir)/X11/rstart
 config_DATA = config
 
 config: config.cpp
-	$(CPP) -DPACKAGEname=rstart -DLIBDIR=$(configdir) -DENVPREFIX=RSTART ${srcdir}/config.cpp |	\
-		$(SED) -e /^\#.*$$/d  -e s/XCOMM/\#/g   > $@
+	$(RAWCPP) $(RAWCPPFLAGS) -DPACKAGEname=rstart -DLIBDIR=$(configdir) \
+	-DENVPREFIX=RSTART < ${srcdir}/config.cpp | $(CPP_SED_MAGIC) > $@
 
 # wrapper scripts
 
 bin_SCRIPTS = rstart rstartd
 
 rstart: client.cpp
-	$(CPP) -DRSHCMD=$(RSH) -DSERVERNAME=rstartd ${srcdir}/client.cpp |	\
-		$(SED) -e /^\#.*$$/d  -e s/XCOMM/\#/g   > $@
+	$(RAWCPP) $(RAWCPPFLAGS) -DRSHCMD=$(RSH) -DSERVERNAME=rstartd \
+	< ${srcdir}/client.cpp | $(CPP_SED_MAGIC) > $@
 
 rstartd: server.cpp
-	$(CPP) -DBINDIR=$(rstart_serverdir) -DLIBDIR=$(configdir) \
-		${srcdir}/server.cpp |	\
-		$(SED) -e /^\#.*$$/d  -e s/XCOMM/\#/g   > $@
+	$(RAWCPP) $(RAWCPPFLAGS) -DBINDIR=$(rstart_serverdir) \
+	-DLIBDIR=$(configdir) -DSERVERNAME=rstartd < ${srcdir}/server.cpp | \
+	$(CPP_SED_MAGIC) > $@
 
 # man pages
 

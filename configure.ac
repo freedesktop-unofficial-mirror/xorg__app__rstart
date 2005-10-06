@@ -40,6 +40,8 @@ AC_PATH_PROG(SED, sed)
 if [[ -z $SED ]] ; then 
    AC_MSG_ERROR([sed not found])
 fi
+AC_CHECK_PROGS(RSH,[remsh rsh rcmd])
+XORG_PROG_RAWCPP
 
 # Checks for pkg-config packages
 PKG_CHECK_MODULES(RSTART, x11)
@@ -47,6 +49,19 @@ AC_SUBST(RSTART_CFLAGS)
 AC_SUBST(RSTART_LIBS)
 
 XORG_RELEASE_VERSION
+
+AC_ARG_WITH(default-user-path,  [  --with-default-user-path=PATH ],
+	[ DEFAULT_USER_PATH="$withval" ],
+        [ DEFAULT_USER_PATH="/bin:/usr/bin:${prefix}/bin:/usr/ucb:/usr/gnu/bin:/usr/local/bin" ])
+AC_SUBST(DEFAULT_USER_PATH)
+
+AC_ARG_WITH(default-man-path,  [  --with-default-man-path=PATH ],
+	[ DEFAULT_X_MANPATH="$withval" ],
+        [ DEFAULT_X_MANPATH="${prefix}/man:/usr/share/man:/usr/man" ])
+AC_SUBST(DEFAULT_X_MANPATH)
+
+
+
 
 AC_OUTPUT([
 	Makefile 
