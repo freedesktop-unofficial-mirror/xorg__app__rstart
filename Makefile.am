@@ -72,13 +72,25 @@ rstartd: server.cpp
 
 # man pages
 
-dist_man1_MANS = \
-        rstartd.man \
-        rstart.man
+appmandir =  $(mandir)/man$(APP_MAN_SUFFIX)
+appman_SOURCES = rstartd.man rstart.man
+appman_DATA = $(appman_SOURCES:man=$(APP_MAN_SUFFIX))
 
-EXTRA_DIST = client.cpp server.cpp config.cpp
+# Strings to replace in man pages
+XORGRELSTRING = @PACKAGE_STRING@
+  XORGMANNAME = X Version 11
+      MANDEFS = -D__projectroot__=$(prefix) \
+	-D__xorgversion__='"$(XORGRELSTRING)" "$(XORGMANNAME)"'
 
-CLEANFILES = rstart rstartd config
+SUFFIXES = .$(APP_MAN_SUFFIX) .man
+
+.man.$(APP_MAN_SUFFIX):
+	$(RAWCPP) $(RAWCPPFLAGS) $(MANDEFS) $(EXTRAMANDEFS) < $< | $(CPP_SED_MAGIC) > $@
+
+
+EXTRA_DIST = client.cpp server.cpp config.cpp $(appman_SOURCES)
+
+CLEANFILES = rstart rstartd config $(appman_DATA)
 
 #
 # commands and contexts
