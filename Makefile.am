@@ -74,7 +74,7 @@ rstartd: server.cpp
 
 appmandir =  $(mandir)/man$(APP_MAN_SUFFIX)
 appman_SOURCES = rstartd.man rstart.man
-appman_DATA = $(appman_SOURCES:man=$(APP_MAN_SUFFIX))
+appman_DATA = $(appman_SOURCES:man=@APP_MAN_SUFFIX@)
 
 # Strings to replace in man pages
 XORGRELSTRING = @PACKAGE_STRING@
