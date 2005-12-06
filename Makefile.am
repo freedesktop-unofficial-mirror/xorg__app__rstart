@@ -73,8 +73,8 @@ rstartd: server.cpp
 # man pages
 
 appmandir = $(APP_MAN_DIR)
-appman_SOURCES = rstartd.man rstart.man
-appman_DATA = $(appman_SOURCES:man=@APP_MAN_SUFFIX@)
+appman_PRE = rstartd.man rstart.man
+appman_DATA = $(appman_PRE:man=@APP_MAN_SUFFIX@)
 
 # Strings to replace in man pages
 XORGRELSTRING = @PACKAGE_STRING@
@@ -88,7 +88,7 @@ SUFFIXES = .$(APP_MAN_SUFFIX) .man
 	$(RAWCPP) $(RAWCPPFLAGS) $(MANDEFS) $(EXTRAMANDEFS) < $< | $(CPP_SED_MAGIC) > $@
 
 
-EXTRA_DIST = client.cpp server.cpp config.cpp $(appman_SOURCES)
+EXTRA_DIST = client.cpp server.cpp config.cpp $(appman_PRE)
 
 CLEANFILES = rstart rstartd config $(appman_DATA)
 
