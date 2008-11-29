@@ -136,7 +136,7 @@ install-data-hook:
 	);								\
 									\
 	cd $(DESTDIR)$(DATA_DIR)/contexts;				\
-	sed -e '/^$$/d' -e '/^#/d' ${srcdir}/contexts/@Aliases |	\
+	sed -e '/^$$/d' -e '/^#/d' @Aliases |				\
 	    while read real aliases; do					\
 	        for i in $$aliases; do					\
 	            $(RM) $$i;						\
@@ -195,6 +195,6 @@ MAINTAINERCLEANFILES = ChangeLog
 .PHONY: ChangeLog
 
 ChangeLog:
-	(GIT_DIR=$(top_srcdir)/.git git-log > .changelog.tmp && mv .changelog.tmp ChangeLog; rm -f .changelog.tmp) || (touch ChangeLog; echo 'git directory not found: installing possibly empty changelog.' >&2)
+	(GIT_DIR=$(top_srcdir)/.git git log > .changelog.tmp && mv .changelog.tmp ChangeLog; rm -f .changelog.tmp) || (touch ChangeLog; echo 'git directory not found: installing possibly empty changelog.' >&2)
 
 dist-hook: ChangeLog
