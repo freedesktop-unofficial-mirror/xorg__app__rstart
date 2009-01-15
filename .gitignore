@@ -22,3 +22,7 @@ rstartd.1
 rstartd.real
 stamp-h1
 *~
+*.o
+rstart-*.tar.*
+ChangeLog
+tags

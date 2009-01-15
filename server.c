@@ -37,50 +37,45 @@
 #include <netdb.h>
 #endif	/* ODT1_DISPLAY_HACK */
 
+#include "server.h"
+
 #define	TRUE	1
 #define	FALSE	0
 
-extern void squish_out_escapes ( char *s );
-extern char * Strdup ( char *s );
-extern int get_a_line ( FILE *f, int *pargc, char ***pargv );
-extern void nomem ( void );
-static char *Strlwr ( char *s0 );
-extern void do_it ( void );
-extern void process ( FILE *f, int is_the_real_thing );
-extern void detach ( void );
-extern void putenv_with_prefix ( char *prefix, char *name, char *value );
-
-/* auth.c */
-extern void do_auth ( void );
+static void squish_out_escapes(char *s);
+static char *Strdup(char *s);
+static int get_a_line(FILE *f, int *pargc, char ***pargv);
+static char *Strlwr(char *s0);
+static void do_it(void);
+static void process(FILE *f, int is_the_real_thing);
+static void detach(void);
+static void putenv_with_prefix(char *prefix, char *name, char *value);
 
 struct key {
 	char *name;
 	void (*func)(int ac, char **av);
 };
 
-extern void key_cmd(int ac, char **av);
-extern void key_exec(int ac, char **av);
-extern void key_context(int ac, char **av);
-extern void key_misc(int ac, char **av);
-extern void key_generic_cmd(int ac, char **av);
-extern void key_dir(int ac, char **av);
-extern void key_detach(int ac, char **av);
-extern void key_nodetach(int ac, char **av);
-extern void key_posix_umask(int ac, char **av);
-extern void key_auth(int ac, char **av);
-extern void key_internal_registries(int ac, char **av);
-extern void key_internal_local_default(int ac, char **av);
-extern void key_internal_global_contexts(int ac, char **av);
-extern void key_internal_local_contexts(int ac, char **av);
-extern void key_internal_global_commands(int ac, char **av);
-extern void key_internal_local_commands(int ac, char **av);
-extern void key_internal_variable_prefix(int ac, char **av);
-extern void key_internal_print(int ac, char **av);
-extern void key_internal_auth_program(int ac, char **av);
-extern void key_internal_auth_input(int ac, char **av);
+static void key_cmd(int ac, char **av);
+static void key_exec(int ac, char **av);
+static void key_context(int ac, char **av);
+static void key_misc(int ac, char **av);
+static void key_generic_cmd(int ac, char **av);
+static void key_dir(int ac, char **av);
+static void key_detach(int ac, char **av);
+static void key_nodetach(int ac, char **av);
+static void key_posix_umask(int ac, char **av);
+static void key_internal_registries(int ac, char **av);
+static void key_internal_local_default(int ac, char **av);
+static void key_internal_global_contexts(int ac, char **av);
+static void key_internal_local_contexts(int ac, char **av);
+static void key_internal_global_commands(int ac, char **av);
+static void key_internal_local_commands(int ac, char **av);
+static void key_internal_variable_prefix(int ac, char **av);
+static void key_internal_print(int ac, char **av);
 
 
-struct key keys[] = {
+static struct key keys[] = {
 	{ "cmd",			key_cmd },
 	{ "exec",			key_exec },
 	{ "context",			key_context },
@@ -105,22 +100,22 @@ struct key keys[] = {
 };
 
 
-char **parm_cmd = NULL;
-char **parm_exec = NULL;
-char **parm_generic_cmd = NULL;
-char *parm_dir = NULL;
-char *parm_context = NULL;
-char **parm_internal_registries = NULL;
-char *parm_internal_local_default = NULL;
-char *parm_internal_global_contexts = NULL;
-char *parm_internal_local_contexts = NULL;
-char *parm_internal_global_commands = NULL;
-char *parm_internal_local_commands = NULL;
-char *parm_internal_variable_prefix = NULL;
-int parm_detach = FALSE;
+static char **parm_cmd = NULL;
+static char **parm_exec = NULL;
+static char **parm_generic_cmd = NULL;
+static char *parm_dir = NULL;
+static char *parm_context = NULL;
+static char **parm_internal_registries = NULL;
+static char *parm_internal_local_default = NULL;
+static char *parm_internal_global_contexts = NULL;
+static char *parm_internal_local_contexts = NULL;
+static char *parm_internal_global_commands = NULL;
+static char *parm_internal_local_commands = NULL;
+static char *parm_internal_variable_prefix = NULL;
+static int parm_detach = FALSE;
 
-char *parm_global_default = DEFAULT_CONFIG;
-char	myname[]=SERVERNAME;
+static char *parm_global_default = DEFAULT_CONFIG;
+char myname[]=SERVERNAME;
 
 int
 main(int argc, char *argv[])
@@ -151,9 +146,8 @@ main(int argc, char *argv[])
 	exit(0);
 }
 
-void
-squish_out_escapes(s)
-char *s;
+static void
+squish_out_escapes(char *s)
 {
 	char *p;
 	char *o;
@@ -178,9 +172,8 @@ char *s;
 	*o = '\0';
 }
 
-char *
-Strdup(s)
-    char *s;
+static char *
+Strdup(char *s)
 {
     char *cs;
 
@@ -191,11 +184,8 @@ Strdup(s)
     return cs;
 }
 
-int
-get_a_line(f, pargc, pargv)
-FILE *f;
-int *pargc;
-char ***pargv;
+static int
+get_a_line(FILE *f, int *pargc, char ***pargv)
 {
 	char buf[2048];
 	char *p;
@@ -261,24 +251,20 @@ char ***pargv;
 }
 
 void
-nomem()
+nomem(void)
 {
 	printf("%s: Failure: Out of memory\n",myname);
 	exit(255);
 }
 
-void
-key_internal_registries(ac, av)
-int ac;
-char **av;
+static void
+key_internal_registries(int ac, char **av)
 {
 	parm_internal_registries = av+1;
 }
 
-void
-key_internal_variable_prefix(ac, av)
-int ac;
-char **av;
+static void
+key_internal_variable_prefix(int ac, char **av)
 {
 	if(ac != 2) {
 		printf(
@@ -288,10 +274,8 @@ char **av;
 	parm_internal_variable_prefix = av[1];
 }
 
-void
-key_internal_local_default(ac, av)
-int ac;
-char **av;
+static void
+key_internal_local_default(int ac, char **av)
 {
 	if(ac != 2) {
 		printf("%s: Failure: Malformed INTERNAL-LOCAL-DEFAULT\n",myname);
@@ -300,10 +284,8 @@ char **av;
 	parm_internal_local_default = av[1];
 }
 
-void
-key_internal_global_commands(ac, av)
-int ac;
-char **av;
+static void
+key_internal_global_commands(int ac, char **av)
 {
 	if(ac != 2) {
 		printf("%s: Failure: Malformed INTERNAL-GLOBAL-COMMANDS\n",myname);
@@ -312,10 +294,8 @@ char **av;
 	parm_internal_global_commands = av[1];
 }
 
-void
-key_internal_local_commands(ac, av)
-int ac;
-char **av;
+static void
+key_internal_local_commands(int ac, char **av)
 {
 	if(ac != 2) {
 		printf("%s: Failure: Malformed INTERNAL-LOCAL-COMMANDS\n",myname);
@@ -324,10 +304,8 @@ char **av;
 	parm_internal_local_commands = av[1];
 }
 
-void
-key_internal_global_contexts(ac, av)
-int ac;
-char **av;
+static void
+key_internal_global_contexts(int ac, char **av)
 {
 	if(ac != 2) {
 		printf("%s: Failure: Malformed INTERNAL-GLOBAL-CONTEXTS\n",myname);
@@ -336,10 +314,8 @@ char **av;
 	parm_internal_global_contexts = av[1];
 }
 
-void
-key_internal_local_contexts(ac, av)
-int ac;
-char **av;
+static void
+key_internal_local_contexts(int ac, char **av)
 {
 	if(ac != 2) {
 		printf("%s: Failure: Malformed INTERNAL-LOCAL-CONTEXTS\n",myname);
@@ -348,10 +324,8 @@ char **av;
 	parm_internal_local_contexts = av[1];
 }
 
-void
-key_cmd(ac, av)
-int ac;
-char **av;
+static void
+key_cmd(int ac, char **av)
 {
 	if(parm_cmd || parm_exec || parm_generic_cmd) {
 		printf(
@@ -361,10 +335,8 @@ char **av;
 	parm_cmd = av;
 }
 
-void
-key_exec(ac, av)
-int ac;
-char **av;
+static void
+key_exec(int ac, char **av)
 {
 	if(parm_cmd || parm_exec || parm_generic_cmd) {
 		printf(
@@ -375,8 +347,7 @@ char **av;
 }
 
 static char *
-Strlwr(s0)
-char *s0;
+Strlwr(char *s0)
 {
 	char *s;
 
@@ -387,10 +358,8 @@ char *s0;
 }
 
 
-void
-key_context(ac, av)
-int ac;
-char **av;
+static void
+key_context(int ac, char **av)
 {
 	char buf[1024];
 	int ok;
@@ -431,10 +400,8 @@ char **av;
 	}
 }
 
-void
-key_dir(ac, av)
-int ac;
-char **av;
+static void
+key_dir(int ac, char **av)
 {
 	if(ac != 2) {
 		printf("%s: Failure: malformed DIR line\n",myname);
@@ -443,10 +410,8 @@ char **av;
 	parm_dir = av[1];
 }
 
-void
-key_misc(ac, av)
-int ac;
-char **av;
+static void
+key_misc(int ac, char **av)
 {
 	char **pp;
 
@@ -480,8 +445,7 @@ ok:
 }
 
 #ifdef	ODT1_DISPLAY_HACK
-odt1_display_hack(s)
-char *s;
+odt1_display_hack(char *s)
 {
 	char buf[80];
 	struct hostent *he;
@@ -513,10 +477,8 @@ char *s;
 }
 #endif	/* ODT1_DISPLAY_HACK */
 
-void
-key_generic_cmd(ac, av)
-int ac;
-char **av;
+static void
+key_generic_cmd(int ac, char **av)
 {
 	if(parm_cmd || parm_exec || parm_generic_cmd) {
 		printf(
@@ -526,7 +488,7 @@ char **av;
 	parm_generic_cmd = av;
 }
 
-void
+static void
 do_it(void)
 {
 	if(parm_dir) {
@@ -659,10 +621,8 @@ do_it(void)
 	exit(255);
 }
 
-void
-process(f, is_the_real_thing)
-FILE *f;
-int is_the_real_thing;
+static void
+process(FILE *f, int is_the_real_thing)
 {
 	int line_argc;
 	char **line_argv;
@@ -697,33 +657,27 @@ ok:
 	}
 }
 
-void
-key_internal_print(ac, av)
-int ac;
-char **av;
+static void
+key_internal_print(int ac, char **av)
 {
 	printf("%s: Debug:",myname);
 	while(*++av) printf(" %s", *av);
 	printf("\n");
 }
 
-void
-key_detach(ac,av)
-int ac;
-char **av;
+static void
+key_detach(int ac, char **av)
 {
 	parm_detach = TRUE;
 }
 
-void
-key_nodetach(ac,av)
-int ac;
-char **av;
+static void
+key_nodetach(int ac, char **av)
 {
 	parm_detach = FALSE;
 }
 
-void
+static void
 detach(void)
 {
 	/* I'm not exactly sure how you're supposed to handle stdio here */
@@ -744,11 +698,8 @@ detach(void)
 	}
 }
 
-void
-putenv_with_prefix(prefix, name, value)
-char *prefix;
-char *name;
-char *value;
+static void
+putenv_with_prefix(char *prefix, char *name, char *value)
 {
 	char *s;
 
@@ -763,10 +714,8 @@ char *value;
 	putenv(s);
 }
 
-void
-key_posix_umask(ac, av)
-int ac;
-char **av;
+static void
+key_posix_umask(int ac, char **av)
 {
 	int i;
 	char *s;
@@ -798,8 +747,7 @@ char **av;
  * called NAME.
  */
 int
-putenv(s)
-    char *s;
+putenv(char *s)
 {
     char *v;
     int varlen, idx;

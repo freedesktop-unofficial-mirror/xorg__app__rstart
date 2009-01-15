@@ -33,19 +33,11 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
+#include "server.h"
 
-static char * Strupr ( char *s0 );
-struct auth_info * find_or_create_auth ( char *s );
-void key_auth ( int ac, char **av );
-void key_internal_auth_program ( int ac, char **av );
-void key_internal_auth_input ( int ac, char **av );
-void do_auth ( void );
-char * expand ( char *s, int ac, char **av );
-
-/* server.c */
-extern void nomem ( void );
-
-extern char myname[];
+static char *Strupr ( char *s0 );
+static struct auth_info *find_or_create_auth ( char *s );
+static char * expand ( char *s, int ac, char **av );
 
 struct list_of_argv {
 	struct list_of_argv *next;
@@ -64,8 +56,7 @@ struct auth_info {
 struct auth_info *auth_schemes = NULL;
 
 static char *
-Strupr(s0)
-char *s0;
+Strupr(char *s0)
 {
 	char *s;
 
@@ -78,8 +69,7 @@ char *s0;
 /* Argument "s" is overwritten and the memory used, so it must not be	*/
 /* deallocated or subsequently used by the caller.			*/
 struct auth_info *
-find_or_create_auth(s)
-char *s;
+find_or_create_auth(char *s)
 {
 	struct auth_info *auth;
 
@@ -103,9 +93,7 @@ char *s;
 }
 
 void
-key_auth(ac, av)
-int ac;
-char **av;
+key_auth(int ac, char **av)
 {
 	struct list_of_argv *lav;
 	struct auth_info *auth;
@@ -128,9 +116,7 @@ char **av;
 }
 
 void
-key_internal_auth_program(ac, av)
-int ac;
-char **av;
+key_internal_auth_program(int ac, char **av)
 {
 	struct auth_info *auth;
 
@@ -145,9 +131,7 @@ char **av;
 }
 
 void
-key_internal_auth_input(ac, av)
-int ac;
-char **av;
+key_internal_auth_input(int ac, char **av)
 {
 	struct auth_info *auth;
 
@@ -223,10 +207,7 @@ do_auth(void)
 }
 
 char *
-expand(s, ac, av)
-char *s;
-int ac;
-char **av;
+expand(char *s, int ac, char **av)
 {
 	static char buf[BUFSIZ];
 	char *p;
