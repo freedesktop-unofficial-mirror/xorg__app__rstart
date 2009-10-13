@@ -189,7 +189,15 @@ EXTRA_DIST +=								\
 	samples/contexts.odt1/odt1					\
 	samples/contexts.odt1/x11r6					\
 	samples/contexts.odt1/@List					\
-	samples/contexts.odt1/openwindows3
+	samples/contexts.odt1/openwindows3				\
+									\
+	specs/fix.awk							\
+	specs/fix.nawk							\
+	specs/fix.sed							\
+	specs/rstart.ms							\
+	specs/rstartd.txt						\
+	specs/tmac.rfc
+
 
 EXTRA_DIST += ChangeLog
 MAINTAINERCLEANFILES = ChangeLog
