@@ -24,7 +24,7 @@
 rstart_serverdir = $(libdir)/X11/rstart
 rstart_server_PROGRAMS = rstartd.real
 
-rstartd_real_CFLAGS = $(RSTART_CFLAGS)			\
+AM_CFLAGS = $(CWARNFLAGS) $(RSTART_CFLAGS)		\
 		-DSERVERNAME=\"rstart\"			\
 		-DDEFAULT_CONFIG=\"$(libdir)/X11/rstart/config\"
 
@@ -55,21 +55,22 @@ configdir = $(libdir)/X11/rstart
 config_DATA = config
 
 config: config.cpp
-	$(RAWCPP) $(RAWCPPFLAGS) -DPACKAGEname=rstart -DLIBDIR=$(configdir) \
-	-DENVPREFIX=RSTART < ${srcdir}/config.cpp | $(CPP_SED_MAGIC) > $@
+	$(AM_V_GEN) $(RAWCPP) $(RAWCPPFLAGS) -DPACKAGEname=rstart \
+	  -DLIBDIR=$(configdir) -DENVPREFIX=RSTART \
+	  < ${srcdir}/config.cpp | $(CPP_SED_MAGIC) > $@
 
 # wrapper scripts
 
 bin_SCRIPTS = rstart rstartd
 
 rstart: client.cpp
-	$(RAWCPP) $(RAWCPPFLAGS) -DRSHCMD=$(RSH) -DSERVERNAME=rstartd \
-	< ${srcdir}/client.cpp | $(CPP_SED_MAGIC) > $@
+	$(AM_V_GEN) $(RAWCPP) $(RAWCPPFLAGS) -DRSHCMD=$(RSH) \
+	  -DSERVERNAME=rstartd < ${srcdir}/client.cpp | $(CPP_SED_MAGIC) > $@
 
 rstartd: server.cpp
-	$(RAWCPP) $(RAWCPPFLAGS) -DBINDIR=$(rstart_serverdir) \
-	-DLIBDIR=$(configdir) -DSERVERNAME=rstartd < ${srcdir}/server.cpp | \
-	$(CPP_SED_MAGIC) > $@
+	$(AM_V_GEN) $(RAWCPP) $(RAWCPPFLAGS) -DBINDIR=$(rstart_serverdir) \
+	  -DLIBDIR=$(configdir) -DSERVERNAME=rstartd < ${srcdir}/server.cpp | \
+	  $(CPP_SED_MAGIC) > $@
 
 # man pages
 
@@ -86,7 +87,7 @@ XORGRELSTRING = @PACKAGE_STRING@
 SUFFIXES = .$(APP_MAN_SUFFIX) .man
 
 .man.$(APP_MAN_SUFFIX):
-	$(RAWCPP) $(RAWCPPFLAGS) $(MANDEFS) $(EXTRAMANDEFS) < $< | $(CPP_SED_MAGIC) > $@
+	$(AM_V_GEN) $(RAWCPP) $(RAWCPPFLAGS) $(MANDEFS) $(EXTRAMANDEFS) < $< | $(CPP_SED_MAGIC) > $@
 
 
 EXTRA_DIST = client.cpp server.cpp config.cpp $(appman_PRE)
