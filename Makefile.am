@@ -199,8 +199,6 @@ EXTRA_DIST +=								\
 	specs/tmac.rfc
 
 
-EXTRA_DIST += ChangeLog
-MAINTAINERCLEANFILES = ChangeLog
 
 .PHONY: ChangeLog
 
