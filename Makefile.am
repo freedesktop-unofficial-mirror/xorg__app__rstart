@@ -92,6 +92,7 @@ SUFFIXES = .$(APP_MAN_SUFFIX) .man
 
 EXTRA_DIST = client.cpp server.cpp config.cpp $(appman_PRE)
 
+MAINTAINERCLEANFILES = ChangeLog INSTALL
 CLEANFILES = rstart rstartd config $(appman_DATA)
 
 #
