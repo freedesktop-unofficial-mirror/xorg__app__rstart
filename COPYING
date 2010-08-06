@@ -1,12 +1,21 @@
-This is a stub file.  This package has not yet had its complete licensing
-information compiled.  Please see the individual source files for details on
-your rights to use and modify this software.
+Copyright (c) 1993 Quarterdeck Office Systems
 
-Please submit updated COPYING files to the Xorg bugzilla:
+Permission to use, copy, modify, distribute, and sell this software
+and software and its documentation for any purpose is hereby granted
+without fee, provided that the above copyright notice appear in all
+copies and that both that copyright notice and this permission
+notice appear in supporting documentation, and that the name
+Quarterdeck Office Systems, Inc. not be used in advertising or
+publicity pertaining to distribution of this software without
+specific, written prior permission.
 
-https://bugs.freedesktop.org/enter_bug.cgi?product=xorg
-
-All licensing questions regarding this software should be directed at the
-Xorg mailing list:
-
-http://lists.freedesktop.org/mailman/listinfo/xorg
+THIS SOFTWARE IS PROVIDED `AS-IS'.  QUARTERDECK OFFICE SYSTEMS,
+INC., DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE,
+INCLUDING WITHOUT LIMITATION ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR
+NONINFRINGEMENT.  IN NO EVENT SHALL QUARTERDECK OFFICE SYSTEMS,
+INC., BE LIABLE FOR ANY DAMAGES WHATSOEVER, INCLUDING SPECIAL,
+INCIDENTAL OR CONSEQUENTIAL DAMAGES, INCLUDING LOSS OF USE, DATA, OR
+PROFITS, EVEN IF ADVISED OF THE POSSIBILITY THEREOF, AND REGARDLESS
+OF WHETHER IN AN ACTION IN CONTRACT, TORT OR NEGLIGENCE, ARISING OUT
+OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
