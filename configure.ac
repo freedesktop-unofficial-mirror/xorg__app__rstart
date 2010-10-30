@@ -26,14 +26,13 @@ AC_INIT(rstart,[1.0.3], [https://bugs.freedesktop.org/enter_bug.cgi?product=xorg
 AM_INIT_AUTOMAKE([foreign dist-bzip2])
 AM_MAINTAINER_MODE
 
-# Require xorg-macros 1.3 or later: XORG_DEFAULT_OPTIONS
+# Require X.Org macros 1.8 or later for AC_PROG_SED in XORG_MANPAGE_SECTIONS
 m4_ifndef([XORG_MACROS_VERSION],
-	  [m4_fatal([must install xorg-macros 1.3 or later before running autoconf/autogen])])
-XORG_MACROS_VERSION(1.3)
+          [m4_fatal([must install xorg-macros 1.8 or later before running autoconf/autogen])])
+XORG_MACROS_VERSION(1.8)
+XORG_DEFAULT_OPTIONS
 
 AM_CONFIG_HEADER(config.h)
-
-XORG_DEFAULT_OPTIONS
 
 AC_ARG_VAR([RM],[Name of the rm command])
 AC_ARG_VAR([LN],[Name of the ln command])
@@ -41,19 +40,11 @@ AC_ARG_VAR([LN],[Name of the ln command])
 AC_CHECK_PROG([RM],[rm],[rm -f])
 AC_CHECK_PROG([LN],[ln],[ln -s])
 
-AC_PROG_CC
-AC_PROG_INSTALL
-AC_PATH_PROG(SED, sed)
-if [[ -z $SED ]] ; then 
-   AC_MSG_ERROR([sed not found])
-fi
 AC_CHECK_PROGS(RSH,[remsh rsh rcmd])
 XORG_PROG_RAWCPP
 
 # Checks for pkg-config packages
 PKG_CHECK_MODULES(RSTART, xproto)
-AC_SUBST(RSTART_CFLAGS)
-AC_SUBST(RSTART_LIBS)
 
 AC_ARG_WITH(default-user-path,  [  --with-default-user-path=PATH ],
 	[ DEFAULT_USER_PATH="$withval" ],
