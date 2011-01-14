@@ -269,6 +269,6 @@ with a bad library that doesn't know how to look host names up using DNS.
 The fix is to look up a host name in $DISPLAY and substitute an IP address.)
 This is a trivial example of an incompatibility that \fIrstart\fP can hide.
 .SH "SEE ALSO"
-rstart(1), rsh(1), A Flexible Remote Execution Protocol Based on \fBrsh\fP
+rstart(__appmansuffix__), rsh(__appmansuffix__), A Flexible Remote Execution Protocol Based on \fBrsh\fP
 .SH AUTHOR
 Jordan Brown, Quarterdeck Office Systems

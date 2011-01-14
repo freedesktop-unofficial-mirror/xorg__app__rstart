@@ -57,9 +57,7 @@ AC_ARG_WITH(default-man-path,  [  --with-default-man-path=PATH ],
         [ DEFAULT_X_MANPATH="${prefix}/man:/usr/share/man:/usr/man" ])
 AC_SUBST(DEFAULT_X_MANPATH)
 
-
-
-
-AC_OUTPUT([
-	Makefile 
-])
+AC_CONFIG_FILES([
+	Makefile
+	man/Makefile])
+AC_OUTPUT

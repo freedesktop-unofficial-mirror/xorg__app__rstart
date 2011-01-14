@@ -112,6 +112,6 @@ rstart somehost exec xterm
 This is obviously dependent on the command interpreter being used on
 the remote system; the example given will work for the Bourne and C shells.
 .SH "SEE ALSO"
-rstartd(1), rsh(1), A Flexible Remote Execution Protocol Based on \fBrsh\fP
+rstartd(__appmansuffix__), rsh(__appmansuffix__), A Flexible Remote Execution Protocol Based on \fBrsh\fP
 .SH AUTHOR
 Jordan Brown, Quarterdeck Office Systems

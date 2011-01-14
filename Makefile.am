@@ -21,6 +21,7 @@
 
 # rstartd server
 
+SUBDIRS = man
 rstart_serverdir = $(libdir)/X11/rstart
 rstart_server_PROGRAMS = rstartd.real
 
@@ -72,28 +73,10 @@ rstartd: server.cpp
 	  -DLIBDIR=$(configdir) -DSERVERNAME=rstartd < ${srcdir}/server.cpp | \
 	  $(CPP_SED_MAGIC) > $@
 
-# man pages
-
-appmandir = $(APP_MAN_DIR)
-appman_PRE = rstartd.man rstart.man
-appman_DATA = $(appman_PRE:man=@APP_MAN_SUFFIX@)
-
-# Strings to replace in man pages
-XORGRELSTRING = @PACKAGE_STRING@
-  XORGMANNAME = X Version 11
-      MANDEFS = -D__projectroot__=$(prefix) \
-	-D__xorgversion__='"$(XORGRELSTRING)" "$(XORGMANNAME)"'
-
-SUFFIXES = .$(APP_MAN_SUFFIX) .man
-
-.man.$(APP_MAN_SUFFIX):
-	$(AM_V_GEN) $(RAWCPP) $(RAWCPPFLAGS) $(MANDEFS) $(EXTRAMANDEFS) < $< | $(CPP_SED_MAGIC) > $@
-
-
-EXTRA_DIST = client.cpp server.cpp config.cpp $(appman_PRE)
+EXTRA_DIST = client.cpp server.cpp config.cpp
 
 MAINTAINERCLEANFILES = ChangeLog INSTALL
-CLEANFILES = rstart rstartd config $(appman_DATA)
+CLEANFILES = rstart rstartd config
 
 #
 # commands and contexts
