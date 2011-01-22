@@ -19,15 +19,15 @@
 #  TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 #  PERFORMANCE OF THIS SOFTWARE.
 
+SUBDIRS = man
+
 # rstartd server
 
-SUBDIRS = man
-rstart_serverdir = $(libdir)/X11/rstart
-rstart_server_PROGRAMS = rstartd.real
+rstart_PROGRAMS = rstartd.real
 
 AM_CFLAGS = $(CWARNFLAGS) $(RSTART_CFLAGS)		\
 		-DSERVERNAME=\"rstart\"			\
-		-DDEFAULT_CONFIG=\"$(libdir)/X11/rstart/config\"
+		-DDEFAULT_CONFIG=\"$(rstartdir)/config\"
 
 rstartd_real_LDADD = $(RSTART_LIBS)
 
@@ -52,12 +52,11 @@ CPP_SED_MAGIC = $(SED) -e '/^\#  *[0-9][0-9]*  *.*$$/d' \
 
 # config data
 
-configdir = $(libdir)/X11/rstart
-config_DATA = config
+rstart_DATA = config
 
 config: config.cpp
 	$(AM_V_GEN) $(RAWCPP) $(RAWCPPFLAGS) -DPACKAGEname=rstart \
-	  -DLIBDIR=$(configdir) -DENVPREFIX=RSTART \
+	  -DLIBDIR=$(rstartdir) -DENVPREFIX=RSTART \
 	  < ${srcdir}/config.cpp | $(CPP_SED_MAGIC) > $@
 
 # wrapper scripts
@@ -69,8 +68,8 @@ rstart: client.cpp
 	  -DSERVERNAME=rstartd < ${srcdir}/client.cpp | $(CPP_SED_MAGIC) > $@
 
 rstartd: server.cpp
-	$(AM_V_GEN) $(RAWCPP) $(RAWCPPFLAGS) -DBINDIR=$(rstart_serverdir) \
-	  -DLIBDIR=$(configdir) -DSERVERNAME=rstartd < ${srcdir}/server.cpp | \
+	$(AM_V_GEN) $(RAWCPP) $(RAWCPPFLAGS) -DBINDIR=$(rstartdir) \
+	  -DLIBDIR=$(rstartdir) -DSERVERNAME=rstartd < ${srcdir}/server.cpp | \
 	  $(CPP_SED_MAGIC) > $@
 
 EXTRA_DIST = client.cpp server.cpp config.cpp
@@ -85,24 +84,22 @@ CLEANFILES = rstart rstartd config
 # FIXME: Someone who cares about rstart may want to look into sanitizing
 # the stuff below.
 
-DATA_DIR = $(libdir)/X11/rstart
-
 install-data-hook:
 	(cd ${srcdir};							\
 	for name in `find ./commands -print | grep -v CVS` ; do		\
 	    if test -f $$name; then					\
 	        sed							\
 		    -e 's,ENVPREFIX,RSTART,g'				\
-		        < $$name > $(DESTDIR)$(DATA_DIR)/$$name;	\
-		case `basename $(DESTDIR)$(DATA_DIR)/$$name` in		\
+		        < $$name > $(DESTDIR)$(rstartdir)/$$name;	\
+		case `basename $(DESTDIR)$(rstartdir)/$$name` in		\
 		@*)							\
 		    ;;							\
 		*)							\
-		    chmod a+x $(DESTDIR)$(DATA_DIR)/$$name ;;		\
+		    chmod a+x $(DESTDIR)$(rstartdir)/$$name ;;		\
 		esac;							\
 	    else							\
 	        if [ -d $$name ] ; then					\
-	            mkdir -p $(DESTDIR)$(DATA_DIR)/$$name ;		\
+	            mkdir -p $(DESTDIR)$(rstartdir)/$$name ;		\
 	        fi;							\
 	    fi;								\
 	done;								\
@@ -112,23 +109,23 @@ install-data-hook:
 	        sed							\
 	            -e 's,_PATH,$(DEFAULT_USER_PATH),g'			\
 	            -e 's,_MANPATH,$(DEFAULT_X_MANPATH),g'		\
-			< $$name > $(DESTDIR)$(DATA_DIR)/$$name ;	\
+			< $$name > $(DESTDIR)$(rstartdir)/$$name ;	\
 	    else							\
 	        if [ -d $$name ] ; then					\
-	            mkdir -p $(DESTDIR)$(DATA_DIR)/$$name	;	\
+	            mkdir -p $(DESTDIR)$(rstartdir)/$$name	;	\
 	        fi ;							\
 	    fi ;							\
 	done;								\
 	);								\
 									\
-	cd $(DESTDIR)$(DATA_DIR)/contexts;				\
+	cd $(DESTDIR)$(rstartdir)/contexts;				\
 	sed -e '/^$$/d' -e '/^#/d' @Aliases |				\
 	    while read real aliases; do					\
 	        for i in $$aliases; do					\
 	            $(RM) $$i;						\
 	            $(LN) $$real $$i;					\
-	            $(RM) $(DESTDIR)$(rstart_serverdir)/commands/$$i;	\
-	            $(LN) $$real $(DESTDIR)$(rstart_serverdir)/commands/$$i; \
+	            $(RM) $(DESTDIR)$(rstartdir)/commands/$$i;		\
+	            $(LN) $$real $(DESTDIR)$(rstartdir)/commands/$$i; 	\
 	        done;							\
 	    done;							\
 	$(RM) @Aliases

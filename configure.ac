@@ -44,6 +44,9 @@ AC_CHECK_PROG([LN],[ln],[ln -s])
 AC_CHECK_PROGS(RSH,[remsh rsh rcmd])
 XORG_PROG_RAWCPP
 
+# Define the root directory for client/server/config
+AC_SUBST([rstartdir],[$libdir/X11/rstart])
+
 # Checks for pkg-config packages
 PKG_CHECK_MODULES(RSTART, xproto)
 
