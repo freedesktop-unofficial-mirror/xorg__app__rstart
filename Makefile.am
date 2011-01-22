@@ -68,7 +68,7 @@ rstart: client.cpp
 	  < ${srcdir}/client.cpp | $(CPP_SED_MAGIC) > $@
 
 rstartd: server.cpp
-	$(AM_V_GEN) $(RAWCPP) $(RAWCPPFLAGS) -DBINDIR=$(rstartdir) \
+	$(AM_V_GEN) $(RAWCPP) $(RAWCPPFLAGS) \
 	  -DLIBDIR=$(rstartdir) < ${srcdir}/server.cpp | \
 	  $(CPP_SED_MAGIC) > $@
 
