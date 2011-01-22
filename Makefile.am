@@ -65,11 +65,11 @@ bin_SCRIPTS = rstart rstartd
 
 rstart: client.cpp
 	$(AM_V_GEN) $(RAWCPP) $(RAWCPPFLAGS) -DRSHCMD=$(RSH) \
-	  -DSERVERNAME=rstartd < ${srcdir}/client.cpp | $(CPP_SED_MAGIC) > $@
+	  < ${srcdir}/client.cpp | $(CPP_SED_MAGIC) > $@
 
 rstartd: server.cpp
 	$(AM_V_GEN) $(RAWCPP) $(RAWCPPFLAGS) -DBINDIR=$(rstartdir) \
-	  -DLIBDIR=$(rstartdir) -DSERVERNAME=rstartd < ${srcdir}/server.cpp | \
+	  -DLIBDIR=$(rstartdir) < ${srcdir}/server.cpp | \
 	  $(CPP_SED_MAGIC) > $@
 
 EXTRA_DIST = client.cpp server.cpp config.cpp

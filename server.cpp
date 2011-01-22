@@ -26,4 +26,4 @@ XCOMM OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 XCOMM
 XCOMM $XFree86: xc/programs/rstart/server.cpp,v 3.2 2001/01/17 23:45:03 dawes Exp $
 
-exec BINDIR/SERVERNAME.real -c LIBDIR/config
+exec BINDIR/rstartd.real -c LIBDIR/config

@@ -121,4 +121,4 @@ $verbose
 /
 xauth list $disp | sed 's/^/AUTH X11 /'
 echo ""
-) | RSHCMD $host $name SERVERNAME
+) | RSHCMD $host $name rstartd
