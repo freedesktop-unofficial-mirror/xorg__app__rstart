@@ -62,5 +62,6 @@ AC_SUBST(DEFAULT_X_MANPATH)
 AC_CONFIG_FILES([
 	Makefile
 	man/Makefile
-	commands/Makefile])
+	commands/Makefile
+	contexts/Makefile])
 AC_OUTPUT

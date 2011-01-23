@@ -19,7 +19,7 @@
 #  TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 #  PERFORMANCE OF THIS SOFTWARE.
 
-SUBDIRS = man commands
+SUBDIRS = man commands contexts
 
 # rstartd server
 
@@ -61,51 +61,8 @@ EXTRA_DIST = rstart.in rstartd.in config.in
 MAINTAINERCLEANFILES = ChangeLog INSTALL
 CLEANFILES = rstart rstartd config
 
-#
-# commands and contexts
-#
-
-# FIXME: Someone who cares about rstart may want to look into sanitizing
-# the stuff below.
-
-install-data-hook:
-	(cd ${srcdir};							\
-	for name in `find ./contexts -print | grep -v CVS` ; do		\
-	    if test -f $$name; then					\
-	        sed							\
-	            -e 's,_PATH,$(DEFAULT_USER_PATH),g'			\
-	            -e 's,_MANPATH,$(DEFAULT_X_MANPATH),g'		\
-			< $$name > $(DESTDIR)$(rstartdir)/$$name ;	\
-	    else							\
-	        if [ -d $$name ] ; then					\
-	            mkdir -p $(DESTDIR)$(rstartdir)/$$name	;	\
-	        fi ;							\
-	    fi ;							\
-	done;								\
-	);								\
-									\
-	cd $(DESTDIR)$(rstartdir)/contexts;				\
-	sed -e '/^$$/d' -e '/^#/d' @Aliases |				\
-	    while read real aliases; do					\
-	        for i in $$aliases; do					\
-	            $(RM) $$i;						\
-	            $(LN) $$real $$i;					\
-	            $(RM) $(DESTDIR)$(rstartdir)/commands/$$i;		\
-	            $(LN) $$real $(DESTDIR)$(rstartdir)/commands/$$i; 	\
-	        done;							\
-	    done;							\
-	$(RM) @Aliases
-
-distuninstallcheck:
-	@:
-
 EXTRA_DIST +=								\
 	server.os2							\
-									\
-	contexts/default						\
-	contexts/@Aliases						\
-	contexts/x11r6							\
-	contexts/@List							\
 									\
 	samples/commands/openwindows2/Terminal				\
 	samples/commands/openwindows2/LoadMonitor			\
