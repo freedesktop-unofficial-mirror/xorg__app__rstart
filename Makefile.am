@@ -67,12 +67,11 @@ rstart: client.cpp
 	$(AM_V_GEN) $(RAWCPP) $(RAWCPPFLAGS) -DRSHCMD=$(RSH) \
 	  < ${srcdir}/client.cpp | $(CPP_SED_MAGIC) > $@
 
-rstartd: server.cpp
-	$(AM_V_GEN) $(RAWCPP) $(RAWCPPFLAGS) \
-	  -DLIBDIR=$(rstartdir) < ${srcdir}/server.cpp | \
-	  $(CPP_SED_MAGIC) > $@
+RSTARTD_SUBSTS = -e 's|@rstartdir[@]|$(rstartdir)|g'
+rstartd: rstartd.in
+	$(AM_V_GEN)$(SED) $(RSTARTD_SUBSTS) < $< > $@
 
-EXTRA_DIST = client.cpp server.cpp config.cpp
+EXTRA_DIST = client.cpp rstartd.in config.cpp
 
 MAINTAINERCLEANFILES = ChangeLog INSTALL
 CLEANFILES = rstart rstartd config
