@@ -63,15 +63,15 @@ config: config.cpp
 
 bin_SCRIPTS = rstart rstartd
 
-rstart: client.cpp
-	$(AM_V_GEN) $(RAWCPP) $(RAWCPPFLAGS) -DRSHCMD=$(RSH) \
-	  < ${srcdir}/client.cpp | $(CPP_SED_MAGIC) > $@
+RSTART_SUBSTS = -e 's|@RSH[@]|$(RSH)|g'
+rstart: rstart.in
+	$(AM_V_GEN)$(SED) $(RSTART_SUBSTS) < $< > $@
 
 RSTARTD_SUBSTS = -e 's|@rstartdir[@]|$(rstartdir)|g'
 rstartd: rstartd.in
 	$(AM_V_GEN)$(SED) $(RSTARTD_SUBSTS) < $< > $@
 
-EXTRA_DIST = client.cpp rstartd.in config.cpp
+EXTRA_DIST = rstart.in rstartd.in config.cpp
 
 MAINTAINERCLEANFILES = ChangeLog INSTALL
 CLEANFILES = rstart rstartd config
