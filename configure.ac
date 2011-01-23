@@ -63,5 +63,6 @@ AC_CONFIG_FILES([
 	Makefile
 	man/Makefile
 	commands/Makefile
-	contexts/Makefile])
+	contexts/Makefile
+	samples/Makefile])
 AC_OUTPUT

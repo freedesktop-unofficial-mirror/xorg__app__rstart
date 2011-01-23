@@ -19,7 +19,7 @@
 #  TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 #  PERFORMANCE OF THIS SOFTWARE.
 
-SUBDIRS = man commands contexts
+SUBDIRS = man commands contexts samples
 
 # rstartd server
 
@@ -61,41 +61,14 @@ EXTRA_DIST = rstart.in rstartd.in config.in
 MAINTAINERCLEANFILES = ChangeLog INSTALL
 CLEANFILES = rstart rstartd config
 
-EXTRA_DIST +=								\
-	server.os2							\
-									\
-	samples/commands/openwindows2/Terminal				\
-	samples/commands/openwindows2/LoadMonitor			\
-	samples/commands/openwindows2/@List				\
-	samples/commands/ListContexts					\
-	samples/commands/x11r5/Terminal					\
-	samples/commands/x11r5/LoadMonitor				\
-	samples/commands/x11r5/@List					\
-	samples/commands/odt1/Terminal					\
-	samples/commands/odt1/LoadMonitor				\
-	samples/commands/odt1/@List					\
-	samples/commands/@List						\
-	samples/commands/ListGenericCommands				\
-	samples/commands/openwindows3/Terminal				\
-	samples/commands/openwindows3/LoadMonitor			\
-	samples/commands/openwindows3/@List				\
-	samples/contexts.odt1/openwindows2				\
-	samples/contexts.odt1/default					\
-	samples/contexts.odt1/@Aliases					\
-	samples/contexts.odt1/x11r5					\
-	samples/contexts.odt1/odt1					\
-	samples/contexts.odt1/x11r6					\
-	samples/contexts.odt1/@List					\
-	samples/contexts.odt1/openwindows3				\
-									\
-	specs/fix.awk							\
-	specs/fix.nawk							\
-	specs/fix.sed							\
-	specs/rstart.ms							\
-	specs/rstartd.txt						\
+EXTRA_DIST +=			\
+	server.os2		\
+	specs/fix.awk		\
+	specs/fix.nawk		\
+	specs/fix.sed		\
+	specs/rstart.ms		\
+	specs/rstartd.txt	\
 	specs/tmac.rfc
-
-
 
 .PHONY: ChangeLog INSTALL
 
