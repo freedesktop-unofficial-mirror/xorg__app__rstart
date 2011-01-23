@@ -36,28 +36,15 @@ rstartd_real_SOURCES =	\
         server.c \
         server.h
 
-# Translate XCOMM into pound sign with sed, rather than passing -DXCOMM=XCOMM
-# to cpp, because that trick does not work on all ANSI C preprocessors.
-# Delete line numbers from the cpp output (-P is not portable, I guess).
-# Allow XCOMM to be preceded by whitespace and provide a means of generating
-# output lines with trailing backslashes.
-# Allow XHASH to always be substituted, even in cases where XCOMM isn't.
-
-CPP_SED_MAGIC = $(SED) -e '/^\#  *[0-9][0-9]*  *.*$$/d' \
-                       -e '/^\#line  *[0-9][0-9]*  *.*$$/d' \
-                       -e '/^[         ]*XCOMM$$/s/XCOMM/\#/' \
-                       -e '/^[         ]*XCOMM[^a-zA-Z0-9_]/s/XCOMM/\#/' \
-                       -e '/^[         ]*XHASH/s/XHASH/\#/' \
-                       -e '/\@\@$$/s/\@\@$$/\\/'
-
 # config data
 
 rstart_DATA = config
 
-config: config.cpp
-	$(AM_V_GEN) $(RAWCPP) $(RAWCPPFLAGS) -DPACKAGEname=rstart \
-	  -DLIBDIR=$(rstartdir) -DENVPREFIX=RSTART \
-	  < ${srcdir}/config.cpp | $(CPP_SED_MAGIC) > $@
+CONFIG_SUBSTS = -e 's|@rstartdir[@]|$(rstartdir)|g' \
+		-e 's|PACKAGEname|rstart|g' \
+		-e 's|ENVPREFIX|RSTART|g'
+config: config.in
+	$(AM_V_GEN)$(SED) $(CONFIG_SUBSTS) < $< > $@
 
 # wrapper scripts
 
@@ -71,7 +58,7 @@ RSTARTD_SUBSTS = -e 's|@rstartdir[@]|$(rstartdir)|g'
 rstartd: rstartd.in
 	$(AM_V_GEN)$(SED) $(RSTARTD_SUBSTS) < $< > $@
 
-EXTRA_DIST = rstart.in rstartd.in config.cpp
+EXTRA_DIST = rstart.in rstartd.in config.in
 
 MAINTAINERCLEANFILES = ChangeLog INSTALL
 CLEANFILES = rstart rstartd config
