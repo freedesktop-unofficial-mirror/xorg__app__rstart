@@ -19,3 +19,10 @@ x11r6: x11r6.in
 	$(AM_V_GEN)$(SED) $(PATH_SUBSTS) < $< > $@
 
 CLEANFILES = $(contexts_DATA)
+
+install-data-hook:
+	$(AM_V_GEN)(cd $(DESTDIR)$(contextsdir) && rm -f x && $(LN_S) x11r6 x)
+	$(AM_V_GEN)(cd $(DESTDIR)$(contextsdir) && rm -f x11 && $(LN_S) x11r6 x11)
+
+uninstall-hook:
+	$(AM_V_at)(cd $(DESTDIR)$(contextsdir) && rm -f x x11)

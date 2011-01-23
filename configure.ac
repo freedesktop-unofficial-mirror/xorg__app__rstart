@@ -35,13 +35,8 @@ XORG_DEFAULT_OPTIONS
 
 AC_CONFIG_HEADERS([config.h])
 
-AC_ARG_VAR([RM],[Name of the rm command])
-AC_ARG_VAR([LN],[Name of the ln command])
-
-AC_CHECK_PROG([RM],[rm],[rm -f])
-AC_CHECK_PROG([LN],[ln],[ln -s])
-
 AC_CHECK_PROGS(RSH,[remsh rsh rcmd])
+AC_PROG_LN_S
 
 # Define the root directory for client/server/config
 AC_SUBST([rstartdir],[$libdir/X11/rstart])
