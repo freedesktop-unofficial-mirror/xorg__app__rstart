@@ -64,5 +64,6 @@ AC_CONFIG_FILES([
 	man/Makefile
 	commands/Makefile
 	contexts/Makefile
-	samples/Makefile])
+	samples/Makefile
+	specs/Makefile])
 AC_OUTPUT

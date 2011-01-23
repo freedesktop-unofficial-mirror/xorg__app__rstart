@@ -19,7 +19,7 @@
 #  TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 #  PERFORMANCE OF THIS SOFTWARE.
 
-SUBDIRS = man commands contexts samples
+SUBDIRS = man commands contexts samples specs
 
 # rstartd server
 
@@ -56,19 +56,10 @@ RSTARTD_SUBSTS = -e 's|@rstartdir[@]|$(rstartdir)|g'
 rstartd: rstartd.in
 	$(AM_V_GEN)$(SED) $(RSTARTD_SUBSTS) < $< > $@
 
-EXTRA_DIST = rstart.in rstartd.in config.in
+CLEANFILES = rstart rstartd config
+EXTRA_DIST = rstart.in rstartd.in config.in server.os2
 
 MAINTAINERCLEANFILES = ChangeLog INSTALL
-CLEANFILES = rstart rstartd config
-
-EXTRA_DIST +=			\
-	server.os2		\
-	specs/fix.awk		\
-	specs/fix.nawk		\
-	specs/fix.sed		\
-	specs/rstart.ms		\
-	specs/rstartd.txt	\
-	specs/tmac.rfc
 
 .PHONY: ChangeLog INSTALL
 
