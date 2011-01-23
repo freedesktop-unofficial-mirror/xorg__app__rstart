@@ -25,10 +25,10 @@
 # First set up some important defaults.  Can not find other config files
 # without these, and can not read some of this one without them!
 
-internal-local-default .PACKAGEname
+internal-local-default .rstart
 internal-global-contexts @rstartdir@/contexts
-internal-local-contexts .PACKAGEname.contexts
-internal-local-commands .PACKAGEname.commands
+internal-local-contexts .rstart.contexts
+internal-local-commands .rstart.commands
 internal-registries local posix x
 internal-global-commands @rstartdir@/commands
-internal-variable-prefix ENVPREFIX
+internal-variable-prefix RSTART

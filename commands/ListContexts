@@ -26,8 +26,8 @@
 
 list=@List
 
-for i in $ENVPREFIX_GLOBAL_CONTEXTS			\
-	$HOME/$ENVPREFIX_LOCAL_CONTEXTS
+for i in $RSTART_GLOBAL_CONTEXTS			\
+	$HOME/$RSTART_LOCAL_CONTEXTS
 do
 	if test -f $i/$list
 	then

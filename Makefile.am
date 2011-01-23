@@ -40,9 +40,7 @@ rstartd_real_SOURCES =	\
 
 rstart_DATA = config
 
-CONFIG_SUBSTS = -e 's|@rstartdir[@]|$(rstartdir)|g' \
-		-e 's|PACKAGEname|rstart|g' \
-		-e 's|ENVPREFIX|RSTART|g'
+CONFIG_SUBSTS = -e 's|@rstartdir[@]|$(rstartdir)|g'
 config: config.in
 	$(AM_V_GEN)$(SED) $(CONFIG_SUBSTS) < $< > $@
 
