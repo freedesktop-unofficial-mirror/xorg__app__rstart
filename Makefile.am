@@ -19,7 +19,7 @@
 #  TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 #  PERFORMANCE OF THIS SOFTWARE.
 
-SUBDIRS = man
+SUBDIRS = man commands
 
 # rstartd server
 
@@ -70,24 +70,6 @@ CLEANFILES = rstart rstartd config
 
 install-data-hook:
 	(cd ${srcdir};							\
-	for name in `find ./commands -print | grep -v CVS` ; do		\
-	    if test -f $$name; then					\
-	        sed							\
-		    -e 's,ENVPREFIX,RSTART,g'				\
-		        < $$name > $(DESTDIR)$(rstartdir)/$$name;	\
-		case `basename $(DESTDIR)$(rstartdir)/$$name` in		\
-		@*)							\
-		    ;;							\
-		*)							\
-		    chmod a+x $(DESTDIR)$(rstartdir)/$$name ;;		\
-		esac;							\
-	    else							\
-	        if [ -d $$name ] ; then					\
-	            mkdir -p $(DESTDIR)$(rstartdir)/$$name ;		\
-	        fi;							\
-	    fi;								\
-	done;								\
-									\
 	for name in `find ./contexts -print | grep -v CVS` ; do		\
 	    if test -f $$name; then					\
 	        sed							\
@@ -119,13 +101,6 @@ distuninstallcheck:
 
 EXTRA_DIST +=								\
 	server.os2							\
-									\
-	commands/ListContexts						\
-	commands/x11r6/Terminal						\
-	commands/x11r6/LoadMonitor					\
-	commands/x11r6/@List						\
-	commands/@List							\
-	commands/ListGenericCommands					\
 									\
 	contexts/default						\
 	contexts/@Aliases						\
