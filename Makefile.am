@@ -19,45 +19,23 @@
 #  TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 #  PERFORMANCE OF THIS SOFTWARE.
 
-SUBDIRS = man commands contexts samples specs
-
-# rstartd server
+SUBDIRS = man commands contexts samples scripts specs
 
 rstart_PROGRAMS = rstartd.real
 
-AM_CFLAGS = $(CWARNFLAGS) $(RSTART_CFLAGS)		\
-		-DSERVERNAME=\"rstart\"			\
-		-DDEFAULT_CONFIG=\"$(rstartdir)/config\"
+AM_CFLAGS = 					\
+	$(CWARNFLAGS) $(RSTART_CFLAGS)		\
+	-DSERVERNAME=\"rstart\"			\
+	-DDEFAULT_CONFIG=\"$(rstartdir)/config\"
 
 rstartd_real_LDADD = $(RSTART_LIBS)
 
 rstartd_real_SOURCES =	\
-        auth.c \
-        server.c \
+        auth.c		\
+        server.c	\
         server.h
 
-# config data
-
-rstart_DATA = config
-
-CONFIG_SUBSTS = -e 's|@rstartdir[@]|$(rstartdir)|g'
-config: config.in
-	$(AM_V_GEN)$(SED) $(CONFIG_SUBSTS) < $< > $@
-
-# wrapper scripts
-
-bin_SCRIPTS = rstart rstartd
-
-RSTART_SUBSTS = -e 's|@RSH[@]|$(RSH)|g'
-rstart: rstart.in
-	$(AM_V_GEN)$(SED) $(RSTART_SUBSTS) < $< > $@
-
-RSTARTD_SUBSTS = -e 's|@rstartdir[@]|$(rstartdir)|g'
-rstartd: rstartd.in
-	$(AM_V_GEN)$(SED) $(RSTARTD_SUBSTS) < $< > $@
-
-CLEANFILES = rstart rstartd config
-EXTRA_DIST = rstart.in rstartd.in config.in server.os2
+EXTRA_DIST = server.os2
 
 MAINTAINERCLEANFILES = ChangeLog INSTALL
 
