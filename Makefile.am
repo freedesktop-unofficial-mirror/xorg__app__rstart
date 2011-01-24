@@ -28,8 +28,6 @@ AM_CFLAGS = 					\
 	-DSERVERNAME=\"rstart\"			\
 	-DDEFAULT_CONFIG=\"$(rstartdir)/config\"
 
-rstartd_real_LDADD = $(RSTART_LIBS)
-
 rstartd_real_SOURCES =	\
         auth.c		\
         server.c	\
