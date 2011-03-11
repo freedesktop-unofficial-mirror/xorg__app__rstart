@@ -16,7 +16,7 @@ PATH_SUBSTS = \
 	-e 's|@DEFAULT_USER_PATH[@]|$(DEFAULT_USER_PATH)|g'
 
 x11r6: x11r6.in
-	$(AM_V_GEN)$(SED) $(PATH_SUBSTS) < $< > $@
+	$(AM_V_GEN)$(SED) $(PATH_SUBSTS) < $(srcdir)/$@.in > $@
 
 CLEANFILES = $(contexts_DATA)
 
