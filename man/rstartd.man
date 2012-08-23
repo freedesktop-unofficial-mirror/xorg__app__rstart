@@ -1,3 +1,4 @@
+.\" t
 .\" $Xorg: rstartd.man,v 1.3 2000/08/17 19:54:01 cpqbld Exp $
 .\" Copyright (c) 1993 Quarterdeck Office Systems
 .\"
@@ -35,7 +36,6 @@
 .if n .sp 1
 .if t .sp .5
 ..
-.ta .3i .6i .9i 1.2i 1.5i 1.8i
 .TH RSTARTD 1 __xorgversion__
 .SH NAME
 rstartd - a sample implementation of a Remote Start rsh helper
@@ -124,13 +124,16 @@ markers.)
 Any commands run are provided a few useful pieces of information in
 environment variables.  The exact names are configurable, but the supplied
 defaults are:
-.EX 0
+
+.TS
+l l.
 $RSTART_CONTEXT		the name of the context
 $RSTART_GLOBAL_CONTEXTS	the global contexts directory
 $RSTART_LOCAL_CONTEXTS	the local contexts directory
 $RSTART_GLOBAL_COMMANDS	the global generic commands directory
 $RSTART_LOCAL_COMMANDS	the local generic commands directory
-.EE
+.TE
+
 $RSTART_{GLOBAL,LOCAL}_CONTEXTS should contain one special file, @List,
 which contains a list of the contexts in that directory in the format
 specified for ListContexts.  The supplied version of ListContexts will
