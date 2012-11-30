@@ -26,7 +26,7 @@ rstart_PROGRAMS = rstartd.real
 AM_CFLAGS = 					\
 	$(CWARNFLAGS) $(RSTART_CFLAGS)		\
 	-DSERVERNAME=\"rstart\"			\
-	-DDEFAULT_CONFIG=\"$(rstartdir)/config\"
+	-DDEFAULT_CONFIG=\"$(configdir)/config\"
 
 rstartd_real_SOURCES =	\
         auth.c		\

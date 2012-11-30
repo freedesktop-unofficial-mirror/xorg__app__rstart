@@ -43,8 +43,11 @@ XORG_DEFAULT_OPTIONS
 AC_CHECK_PROGS(RSH,[remsh rsh rcmd])
 AC_PROG_LN_S
 
-# Define the root directory for client/server/config
+# Define the root directory for client/server
 AC_SUBST([rstartdir],[$libdir/X11/rstart])
+
+# Define the root directory for config
+AC_SUBST([configdir],[$(sysconfdir)/X11/rstart])
 
 # Obtain compiler options from depedencies
 PKG_CHECK_MODULES(RSTART, xproto)
