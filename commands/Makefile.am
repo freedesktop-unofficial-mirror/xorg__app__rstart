@@ -1,11 +1,14 @@
 
 commandsdir = $(rstartdir)/commands
-nobase_dist_commands_DATA =	\
+
+nobase_dist_commands_DATA = 	\
+	@List			\
+	x11r6/@List
+
+nobase_dist_commands_SCRIPTS =	\
 	ListContexts		\
 	x11r6/Terminal		\
 	x11r6/LoadMonitor	\
-	x11r6/@List		\
-	@List			\
 	ListGenericCommands
 
 install-data-hook:
