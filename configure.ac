@@ -47,7 +47,7 @@ AC_PROG_LN_S
 AC_SUBST([rstartdir],[$libdir/X11/rstart])
 
 # Define the root directory for config
-AC_SUBST([configdir],[$(sysconfdir)/X11/rstart])
+AC_SUBST([configdir],[$sysconfdir/X11/rstart])
 
 # Obtain compiler options from depedencies
 PKG_CHECK_MODULES(RSTART, xproto)
