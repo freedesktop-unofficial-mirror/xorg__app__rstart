@@ -30,7 +30,6 @@ AC_CONFIG_HEADERS(config.h)
 
 # Initialize Automake
 AM_INIT_AUTOMAKE([foreign dist-bzip2])
-AM_MAINTAINER_MODE
 
 # Require X.Org macros 1.8 or later for AC_PROG_SED in XORG_MANPAGE_SECTIONS
 m4_ifndef([XORG_MACROS_VERSION],
